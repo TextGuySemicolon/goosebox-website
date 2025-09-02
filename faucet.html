@@ -1631,7 +1631,10 @@
             if ((state && code) && !window.location.pathname.includes('faucet.html')) {
 
                 
-                const newUrl = `${window.location.origin}/faucet.html${window.location.search}`;
+                // Get the base path from current location
+                const currentPath = window.location.pathname;
+                const basePath = currentPath.replace(/\/[^\/]*$/, ''); // Remove filename, keep directory
+                const newUrl = `${window.location.origin}${basePath}/faucet.html${window.location.search}`;
 
                 window.location.href = newUrl;
                 return true;
