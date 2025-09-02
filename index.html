@@ -41,6 +41,7 @@
     .logo { height: 50px; width: auto; }
     .flogo { height: 80px; width: auto; }
   </style>
+  <script type="module" crossorigin src="/assets/main-VMP1qNa6.js"></script>
 </head>
 <body class="bg-wood-50 text-stone-700">
 
@@ -232,8 +233,6 @@
     </div>
   </footer>
 
-  <script src="js/languages.js"></script>
-  <!-- <script type="module" src="/src/main.js"></script> -->
 
   <script>
     (function checkTwitterCallback() {
@@ -251,11 +250,11 @@
   </script>
   
   <script>
-    let currentLang = defaultLanguage;
+    let currentLang = window.defaultLanguage;
 
     function initLanguage() {
       const savedLang = localStorage.getItem('goosebox_lang');
-      if (savedLang && languageConfig[savedLang]) {
+      if (savedLang && window.languageConfig[savedLang]) {
         currentLang = savedLang;
       }
       updateLanguage(currentLang);
@@ -264,13 +263,13 @@
     }
 
     function updateLanguage(lang) {
-      const langData = getLanguageData(lang);
+      const langData = window.getLanguageData(lang);
       
       document.title = langData.title;
       
       document.querySelectorAll('[data-lang]').forEach(el => {
         const key = el.getAttribute('data-lang');
-        const value = getNestedValue(langData, key);
+        const value = window.getNestedValue(langData, key);
         if (value) {
           if (el.tagName === 'INPUT' && el.type === 'placeholder') {
             el.placeholder = value;
@@ -336,8 +335,8 @@
       const nameElement = document.getElementById('currentLangName');
       
       if (flagElement && nameElement) {
-        const flagCode = languageConfig[lang].flag;
-        const name = languageConfig[lang].name;
+        const flagCode = window.languageConfig[lang].flag;
+        const name = window.languageConfig[lang].name;
         
         flagElement.className = `fi fi-${flagCode}`;
         nameElement.textContent = name;
@@ -346,7 +345,7 @@
 
     function renderLanguageSelector() {
       const container = document.getElementById('languageOptions');
-      container.innerHTML = Object.entries(languageConfig).map(([code, lang]) => `
+      container.innerHTML = Object.entries(window.languageConfig).map(([code, lang]) => `
         <button class="w-full text-left px-4 py-2 hover:bg-wood-50 text-wood-900 transition-colors duration-150 ${code === currentLang ? 'bg-wood-100 text-wood-900 font-medium' : 'hover:text-wood-700'} flex items-center gap-3 rounded-md" 
                 onclick="switchLanguage('${code}')">
           <span class="fi fi-${lang.flag} text-lg flex-shrink-0"></span>
@@ -357,7 +356,7 @@
     }
 
     function switchLanguage(lang) {
-      if (languageConfig[lang]) {
+      if (window.languageConfig[lang]) {
         currentLang = lang;
         localStorage.setItem('goosebox_lang', lang);
         updateLanguage(lang);

@@ -50,7 +50,8 @@
             overflow: hidden;
         }
     </style>
-  <script type="module" crossorigin src="/assets/faucet-DS9spmeW.js"></script>
+  <script type="module" crossorigin src="/assets/faucet-ElXECCnp.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/main-VMP1qNa6.js">
 </head>
 <body class="bg-wood-50 text-stone-700">
     <div class="reown-font-preload">.</div>
@@ -196,8 +197,7 @@
             <p class="text-stone-400">© 2025 Goosebox</p>
         </div>
     </footer>
-
-    <script src="public/js/languages.js"></script>
+
     
     
     
@@ -210,7 +210,7 @@
         let faucetRecaptchaToken = null;
         let countdownTimer = null;
         let currentCooldownTime = 0;
-        let currentLang = defaultLanguage;
+        let currentLang = window.defaultLanguage;
         let isCheckingTwitterStatus = false;
         let isCheckingFaucetStatus = false;
         let faucetStatusPromise = null;
@@ -235,7 +235,7 @@
 
         function initLanguage() {
             const savedLang = localStorage.getItem('goosebox_lang');
-            const config = getLanguageConfig();
+            const config = window.languageConfig;
             if (savedLang && config[savedLang]) {
                 currentLang = savedLang;
             }
@@ -244,7 +244,7 @@
         }
 
         function updateLanguage(lang) {
-            const langData = getLanguageData(lang);
+            const langData = window.getLanguageData(lang);
             
             document.title = langData.faucet?.title ? `${langData.faucet.title} - Goosebox` : (lang === 'zh' ? '加入Goosebox！ - Goosebox' : 'Join Goosebox! - Goosebox');
             
@@ -282,7 +282,7 @@
             const nameElement = document.getElementById('currentLangName');
             
             if (flagElement && nameElement) {
-                const config = getLanguageConfig();
+                const config = window.languageConfig;
                 if (config && config[lang]) {
                     const flagCode = config[lang].flag;
                     const name = config[lang].name;
@@ -294,7 +294,7 @@
 
         function updateWalletStatusDisplay() {
             if (walletAddress && authToken) {
-                const langData = getLanguageData(currentLang);
+                const langData = window.getLanguageData(currentLang);
                 const walletConnectedMsg = langData.faucet?.messages?.walletConnected || '钱包已连接';
                 showStatus('walletStatus', `${walletConnectedMsg}: ${formatAddress(walletAddress)}`, 'success');
                 
@@ -378,7 +378,7 @@
         
         function renderLanguageSelector() {
             const container = document.getElementById('languageOptions');
-            const config = getLanguageConfig();
+            const config = window.languageConfig;
             container.innerHTML = Object.entries(config).map(([code, lang]) => `
                 <button class="w-full text-left px-4 py-2 hover:bg-wood-50 text-wood-900 transition-colors duration-150 ${code === currentLang ? 'bg-wood-100 text-wood-900 font-medium' : 'hover:text-wood-700'} flex items-center gap-3 rounded-md" 
                         onclick="switchLanguage('${code}')">
@@ -391,7 +391,7 @@
 
         
         function switchLanguage(lang) {
-            const config = getLanguageConfig();
+            const config = window.languageConfig;
             if (config[lang]) {
                 currentLang = lang;
                 localStorage.setItem('goosebox_lang', lang);
@@ -402,8 +402,8 @@
 
         
         function getLanguageConfig() {
-            if (typeof languageConfig !== 'undefined') {
-                return languageConfig;
+            if (typeof window.languageConfig !== 'undefined') {
+                return window.languageConfig;
             }
             
             return {
@@ -479,7 +479,7 @@
 
      
         function showStatusI18n(elementId, messageKey, type = 'info', params = {}) {
-            const langData = getLanguageData(currentLang);
+            const langData = window.getLanguageData(currentLang);
             const keys = messageKey.split('.');
             let message = langData;
             for (const key of keys) {
@@ -513,7 +513,7 @@
 
         
         function getI18nMessage(messageKey, fallback = '') {
-            const langData = getLanguageData(currentLang);
+            const langData = window.getLanguageData(currentLang);
             const keys = messageKey.split('.');
             let message = langData;
             for (const key of keys) {
@@ -540,7 +540,7 @@
             const minutes = Math.floor((seconds % 3600) / 60);
             const secs = seconds % 60;
 
-            const langData = getLanguageData(currentLang);
+            const langData = window.getLanguageData(currentLang);
             const hoursText = langData.faucet?.messages?.hours || 'hours';
             const minutesText = langData.faucet?.messages?.minutes || 'minutes';
             const secondsText = langData.faucet?.messages?.seconds || 'seconds';
@@ -600,7 +600,7 @@
                     recaptchaContainer.style.display = 'none';
                 }
                 
-                const langData = getLanguageData(currentLang);
+                const langData = window.getLanguageData(currentLang);
                 const cooldownText = langData.faucet?.messages?.cooldown || 'Cooling down';
                 countdownElement.textContent = `${cooldownText} (${formatCountdown(currentCooldownTime)})`;
             } else {
@@ -755,7 +755,7 @@
 
                 const { distributionId, amount, status, twitter, rateLimit, note } = data.data;
 
-                const langData = getLanguageData(currentLang);
+                const langData = window.getLanguageData(currentLang);
                 let successMessage = data.message || langData.faucet?.messages?.claimSuccess || 'Claim request submitted successfully';
                 let successDetails = '';
                 
@@ -991,7 +991,7 @@
                     walletAddress = user.walletAddress;
 
 
-                    const walletConnectedMsg = getLanguageData(currentLang).faucet?.messages?.walletConnected || '钱包已连接';
+                    const walletConnectedMsg = window.getLanguageData(currentLang).faucet?.messages?.walletConnected || '钱包已连接';
                     showStatus('walletStatus', `${walletConnectedMsg}: ${formatAddress(user.walletAddress)}`, 'success');
 
                     return true;
@@ -1111,7 +1111,7 @@
 
                         
                         // 更新UI状态
-                        const walletConnectedMsg = getLanguageData(currentLang).faucet?.messages?.walletConnected || '钱包已连接';
+                        const walletConnectedMsg = window.getLanguageData(currentLang).faucet?.messages?.walletConnected || '钱包已连接';
                         showStatus('walletStatus', `${walletConnectedMsg}: ${formatAddress(walletAddress)}`, 'success');
                         updateWalletButtonVisibility(true);
                         checkClaimButtonState();
@@ -1436,7 +1436,7 @@
                 updateClaimButtonText();
                 
                 walletAddress = address;
-                const newAccountMsg = getLanguageData(currentLang).faucet?.messages?.newAccountAuthenticating || '🔄 新账户认证中';
+                const newAccountMsg = window.getLanguageData(currentLang).faucet?.messages?.newAccountAuthenticating || '🔄 新账户认证中';
                 showStatus('walletStatus', `${newAccountMsg}: ${formatAddress(address)}`, 'info');
                 checkClaimButtonState();
                 
@@ -1475,7 +1475,7 @@
 
                             
                             if (user.walletAddress.toLowerCase() === address.toLowerCase()) {
-                                const walletConnectedMsg = getLanguageData(currentLang).faucet?.messages?.walletConnected || '钱包已连接';
+                                const walletConnectedMsg = window.getLanguageData(currentLang).faucet?.messages?.walletConnected || '钱包已连接';
                                 showStatus('walletStatus', `${walletConnectedMsg}: ${formatAddress(address)}`, 'success');
                                 updateWalletButtonVisibility(true);
                                 checkClaimButtonState();
@@ -1509,7 +1509,7 @@
             if (!authToken || window.needsReauth) {
 
                 
-                const walletConnectedMsg = getLanguageData(currentLang).faucet?.messages?.walletConnected || '钱包已连接';
+                const walletConnectedMsg = window.getLanguageData(currentLang).faucet?.messages?.walletConnected || '钱包已连接';
                 showStatus('walletStatus', `${walletConnectedMsg}: ${formatAddress(address)}`, 'info');
                 
                 // 更新按钮可见性
@@ -1532,7 +1532,7 @@
                 window.needsReauth = false;
             } else {
 
-                const walletConnectedMsg = getLanguageData(currentLang).faucet?.messages?.walletConnected || '钱包已连接';
+                const walletConnectedMsg = window.getLanguageData(currentLang).faucet?.messages?.walletConnected || '钱包已连接';
                 showStatus('walletStatus', `${walletConnectedMsg}: ${formatAddress(address)}`, 'success');
                 updateWalletButtonVisibility(true);
                 checkClaimButtonState();

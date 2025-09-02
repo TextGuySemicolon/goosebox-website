@@ -1,5 +1,5 @@
 // 所有语言包集中在一个文件中，避免CORS问题
-const languagePacks = {
+window.languagePacks = {
   zh: {
     title: 'Goosebox — 鹅场挂机养成',
     subtitle: '鹅场挂机养成 · Idle Goose',
@@ -1211,7 +1211,7 @@ const languagePacks = {
 };
 
 // 语言配置
-const languageConfig = {
+window.languageConfig = {
   zh: { name: '中文', flag: 'cn' },
   en: { name: 'English', flag: 'us' },
   ru: { name: 'Русский', flag: 'ru' },
@@ -1220,18 +1220,18 @@ const languageConfig = {
   id: { name: 'Bahasa Indonesia', flag: 'id' }
 };
 
-const defaultLanguage = 'en';
+window.defaultLanguage = 'en';
 
 // 工具函数
-function getLanguageData(lang) {
-  return languagePacks[lang] || languagePacks[defaultLanguage];
+window.getLanguageData = function(lang) {
+  return window.languagePacks[lang] || window.languagePacks[window.defaultLanguage];
 }
 
-function getSupportedLanguages() {
-  return Object.keys(languagePacks);
+window.getSupportedLanguages = function() {
+  return Object.keys(window.languagePacks);
 }
 
-function getNestedValue(obj, path) {
+window.getNestedValue = function(obj, path) {
   return path.split('.').reduce((current, key) => current?.[key], obj);
 }
 
