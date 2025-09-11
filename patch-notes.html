@@ -253,7 +253,7 @@
       
       try {
         // Fetch the markdown file
-        const response = await fetch('patch-notes.md');
+        const response = await fetch('./patch-notes.md');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
